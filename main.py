@@ -26,7 +26,7 @@ def sandbox():
     prices = amalgamate_prices(parse_yahoo_prices(PATH))
     returns = prices/prices.shift(1) - 1
     returns = returns.iloc[1:, :]
-    hrp = HierarchicalRiskPortfolio('portfolio', 'ward', 'ivp', returns)
+    hrp = HierarchicalRiskPortfolio('portfolio', 'ward', 'minvar', returns)
     print(hrp.get_allocations())
    
 def test_distance_package():

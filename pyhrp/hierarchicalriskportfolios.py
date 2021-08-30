@@ -27,8 +27,7 @@ class HierarchicalRiskPortfolio:
     ------------------------------------
     This library as of now supports three allocation methods: minimum variance, inverse volatility, and equal risk contribution.
     The minimum variance allocation method takes into account correlations between different pairs of timeseries; ignoring these
-    correlations leads to the inverse volatility portfolio. The minimum variance and inverse volatility strategies, 
-    differ in within-cluster computations but compute across-cluster allocations identically.
+    correlations leads to the inverse volatility portfolio. 
     """
 
     def __init__(self, dissimilarity, linkage, allocation_method, returns):        
@@ -43,7 +42,7 @@ class HierarchicalRiskPortfolio:
         allocation_method: str
             Can be set to one of 'minvar', 'ivp', or 'erc' for the minimum variance, inverse volatility, and equal risk
             contribution allocation methods respectively
-        timeseries: pd.Dataframe
+        returns: pd.DataFrame
             A dataframe of timeseries of returns. If using the 'ltdc' dissimilarity measure, must be 
             preprocessed to remove autocorrelation and heteroscedasticity.
         """
@@ -71,7 +70,7 @@ class HierarchicalRiskPortfolio:
 
         links = linkage(dissim, self.linkage)
         serialized_cov_matrix = quasidiagonalize_cov(self.returns, links)
-        clusAl = ClusteringAllocation(serialized_cov_matrix, self.corr.columns.values, links, self.allocation_method)
+        clusAl = ClusteringAllocation(serialized_cov_matrix, self.corr.columns.values, links, self.allocation_method, self.returns)
 
         return clusAl.get_portfolio_weights()
         

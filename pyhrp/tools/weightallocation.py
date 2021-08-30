@@ -31,7 +31,7 @@ class ClusteringAllocation(WeightAllocation):
     """
     A class for clustering-based weight allocation.
     """
-    def __init__(self, quasi_diag_cov, tickers, link_matrix, strategy):
+    def __init__(self, quasi_diag_cov, tickers, link_matrix, strategy, returns):
         """
         Parameters
         ----------
@@ -45,11 +45,15 @@ class ClusteringAllocation(WeightAllocation):
             The type of clustering strategy that will be used. Can be set to 'minvar', 
             'erc', and 'ivp' for the minimum variance, equal risk contribution, and
             inverse volatility portfolios respectively.
+        returns: pd.DataFrame
+            A dataframe of timeseries of returns. If using the 'ltdc' dissimilarity measure, must be 
+            preprocessed to remove autocorrelation and heteroscedasticity.
         """
         self.quasi_diag_cov = quasi_diag_cov
         self.tickers = tickers
         self.link_matrix = link_matrix
         self.strategy = strategy
+        self.returns = returns
 
     def get_portfolio_weights(self):
         """
@@ -108,12 +112,14 @@ class ClusteringAllocation(WeightAllocation):
         left_w = self.get_weights(left_var_cov) 
         right_w = self.get_weights(right_var_cov)
 
-        # compute the variance of left & right child:
+        # compute the variance of left & right child, and the covariance between the childs:
         left_variance = left_w.T @ left_var_cov @ left_w
         right_variance = right_w.T @ right_var_cov @ right_w
+        cov = np.cov(self.returns[[self.tickers[i] for i in left_leafs]].to_numpy() @ left_w, 
+                        self.returns[[self.tickers[i] for i in right_leafs]].to_numpy() @ right_w)
 
         # compute the weighting factors of left & right child:
-        left_alpha, right_alpha = self.get_cluster_factors(left_variance, right_variance) 
+        left_alpha, right_alpha = self.get_cluster_factors(left_variance, right_variance, cov[0,1]) 
 
         left_weights = {}
         right_weights = {}
@@ -127,7 +133,7 @@ class ClusteringAllocation(WeightAllocation):
         return {**self.clustering_allocation(left_cluster_num, left_weights), 
                 **self.clustering_allocation(right_cluster_num, right_weights)}
 
-    def get_cluster_factors(self, left_var, right_var):
+    def get_cluster_factors(self, left_var, right_var, cov):
         """
         Returns the factors to weight the left cluster and right cluster.
 
@@ -137,17 +143,22 @@ class ClusteringAllocation(WeightAllocation):
             The variance of the left cluster
         right_var: float
             The variance of the right cluster
-
+        cov: float
+            The covariance between the left and right cluster
         Returns
         -------
         float, float
         """
-        if self.strategy == "minvar" or self.strategy == "ivp":
-            left_alpha = 1 - (left_var/(left_var + right_var))
+        if self.strategy == "minvar":
+            left_alpha = (1/2)*(2*right_var - cov)/(left_var + right_var - cov)
+            right_alpha = 1 - left_alpha
+
+        elif  self.strategy == "ivp":
+            left_alpha = (left_var/(left_var + right_var))
             right_alpha = 1 - left_alpha
 
         elif self.strategy == "erc":
-            left_alpha = 1/(1+math.sqrt(left_var/right_var))
+            left_alpha = (math.sqrt(left_var/right_var))/(1+math.sqrt(left_var/right_var))
             right_alpha = 1 - left_alpha
 
         return left_alpha, right_alpha
@@ -207,7 +218,7 @@ class ClusteringAllocation(WeightAllocation):
             w_denominator = np.trace(np.linalg.inv(var_cov_diag))
             weights = w_numerator/w_denominator
 
-        if (self.strategy=="erc"):
+        elif (self.strategy=="erc"):
             weights = self.ERC_optimization(var_cov)
 
         return weights
