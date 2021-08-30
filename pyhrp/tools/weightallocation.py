@@ -154,11 +154,11 @@ class ClusteringAllocation(WeightAllocation):
             right_alpha = 1 - left_alpha
 
         elif  self.strategy == "ivp":
-            left_alpha = (left_var/(left_var + right_var))
+            left_alpha = 1 - (left_var/(left_var + right_var))
             right_alpha = 1 - left_alpha
 
         elif self.strategy == "erc":
-            left_alpha = (math.sqrt(left_var/right_var))/(1+math.sqrt(left_var/right_var))
+            left_alpha = 1 - (math.sqrt(left_var/right_var))/(1+math.sqrt(left_var/right_var))
             right_alpha = 1 - left_alpha
 
         return left_alpha, right_alpha
