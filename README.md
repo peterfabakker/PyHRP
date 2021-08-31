@@ -22,6 +22,7 @@ The algorithm which this library is based upon is taken directly from Lohre et a
 
 Hierarchical clustering is first performed in order to group together timeseries in a dendrogram which are (a) highly correlated or (b) share similar correlation structures across the entire portfolio or (c) are highly likely to experience downturns simultaneously (more on this below). The resulting dendrogram will result in a binary tree looking something like this:
 
+![](image/dendrogram.png)
 
 
 ### Resources
