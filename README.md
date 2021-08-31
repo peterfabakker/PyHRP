@@ -58,5 +58,10 @@ The ERC portfolio is simply a portfolio where all timeseries in a cluster contri
 PyHRP computes splitting factors according to the methodology that was used for the within-cluster allocation. If MVP was used to compute within-cluster allocation, then the splitting factor is computed such that the total variance between two clusters is minimized; the covariance between the two clusters is taken into account. if IVP was used, then the splitting factor is computed such that each cluster is weighted inversely proportional to its total variance; this is equivalent to minimizing the total variance between the two clusters while ignoring the covariance between the two clusters. If ERC was used, the the splitting factor is computed such that both clusters have the same total variance after being weighted by the splitting factor.
 
 ### Resources
-1. Daniel Mullner, “Modern hierarchical, agglomerative clustering algorithms”, https://arxiv.org/abs/1109.2378v1
-2. Documentation for the hierarchical clustering algorithm used in PyHRP:  https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+1. Harald Lohre, Carsten Rother, and Kilian Axel Schafer, "Hierarchical Risk Parity: Accounting for tail dependencies in multi-asset multi-factor allocations",  https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3513399
+2. Daniel Mullner, “Modern hierarchical, agglomerative clustering algorithms”, https://arxiv.org/abs/1109.2378v1
+3. Documentation for the hierarchical clustering algorithm used in PyHRP:  https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+4. Giovanni De Luca, Paola Zuccolotto, "A tail dependence-based dissimilarity measure for financial time series clustering", https://link.springer.com/article/10.1007/s11634-011-0098-3
+5. Marcos Lopez De Prado, "Building Diversified Portfolios that Outperform Out of Sample", https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678
+6. Sebastien Maillard, Thierry Roncalli, and Jerome Teiletche, "On the Properties of Equally Weighted Risk Contribution Portfolios", https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1271972
+7. Erick Forseth and Ed Tricker, "Equal Risk Contribution Portfolios", https://www.grahamcapital.com/Equal%20Risk%20Contribution%20April%202019.pdf
