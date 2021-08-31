@@ -57,7 +57,7 @@ The ERC portfolio is simply a portfolio where all timeseries in a cluster contri
 ## Calculating across-cluster allocations
 PyHRP computes splitting factors according to the methodology that was used for the within-cluster allocation. If MVP was used to compute within-cluster allocation, then the splitting factor is computed such that the total variance between two clusters is minimized; the covariance between the two clusters is taken into account. if IVP was used, then the splitting factor is computed such that each cluster is weighted inversely proportional to its total variance; this is equivalent to minimizing the total variance between the two clusters while ignoring the covariance between the two clusters. If ERC was used, the the splitting factor is computed such that both clusters have the same total variance after being weighted by the splitting factor.
 
-### Resources
+## Resources
 1. Harald Lohre, Carsten Rother, and Kilian Axel Schafer, "Hierarchical Risk Parity: Accounting for tail dependencies in multi-asset multi-factor allocations",  https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3513399
 2. Daniel Mullner, “Modern hierarchical, agglomerative clustering algorithms”, https://arxiv.org/abs/1109.2378v1
 3. Documentation for the hierarchical clustering algorithm used in PyHRP:  https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
