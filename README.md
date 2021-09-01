@@ -29,7 +29,7 @@ Hierarchical clustering is first performed in order to group together timeseries
 The dissimilarity matrix is an integral component to generating dendrograms like the one above. The dissimilarity matrix explains how "dissimilar" each pair of timeseries within our universe are. PyHRP provides implementations for three different types of dissimilarity matrices to be chosen by the user.
 
 #### CorrDissimilarity
-A dissimilarity matrix based on 'CorrDissimilarity' dissimilarities has its (i,j)<sup>th</sup> element equal to ((1-p<sub>i,j</sub>)/2)<sup>1/2</sup>, where p<sub>i,j</sub> is the correlation between timeseries i and j. Hence, positively correlated timeseries are deemed 'similar', while negatively correlated timeseries are deemed 'not similar'. 
+A dissimilarity matrix based on 'CorrDissimilarity' dissimilarities has its (i,j)<sup>th</sup> element equal to ((1-p<sub>i,j</sub>)/2)<sup>1/2</sup>, where p<sub>i,j</sub> is the correlation between timeseries i and j. Hence, positively correlated timeseries are deemed relatively 'similar', while negatively correlated timeseries are deemed relatively 'not similar'. 
 
 #### PortfolioDissimilarity
 A dissimilarity matrix based on 'Portfolio' dissimilarities has its (i,j)<sup>th</sup> element equal to l2-norm of the difference between vectors of 'CorrDissimilarities' belonging to the i<sup>th</sup> timeseries and the j<sup>th</sup> timeseries. This dissimilarity metric takes into account not only how two timeseries are correlated, but how they correlate to the rest of the portfolio. 
