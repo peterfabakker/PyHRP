@@ -150,7 +150,7 @@ class ClusteringAllocation(WeightAllocation):
         float, float
         """
         if self.strategy == "minvar":
-            left_alpha = (1/2)*(2*right_var - cov)/(left_var + right_var - cov)
+            left_alpha = (right_var - cov)/(left_var + right_var - 2*cov)
             right_alpha = 1 - left_alpha
 
         elif  self.strategy == "ivp":
